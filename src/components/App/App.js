@@ -8,6 +8,9 @@ import SignUp from '../SignUp/SignUp'
 import SignIn from '../SignIn/SignIn'
 import SignOut from '../SignOut/SignOut'
 import ChangePassword from '../ChangePassword/ChangePassword'
+import CreateEvent from '../Create/Create'
+import EventLog from '../EventLog/EventLog'
+import Profile from '../Profile/Profile'
 
 class App extends Component {
   constructor () {
@@ -53,6 +56,15 @@ class App extends Component {
           )} />
           <AuthenticatedRoute user={user} path='/change-password' render={() => (
             <ChangePassword msgAlert={this.msgAlert} user={user} />
+          )} />
+          <AuthenticatedRoute user={user} path='/create-event' render={() => (
+            <CreateEvent user={user} />
+          )} />
+          <AuthenticatedRoute user={user} path='/event-feed' render={() => (
+            <EventLog user={user} />
+          )} />
+          <AuthenticatedRoute user={user} path='/profile' render={() => (
+            <Profile user={user} />
           )} />
         </main>
       </Fragment>

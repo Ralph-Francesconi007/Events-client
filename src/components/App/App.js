@@ -11,6 +11,7 @@ import ChangePassword from '../ChangePassword/ChangePassword'
 import CreateEvent from '../Create/Create'
 import EventLog from '../EventLog/EventLog'
 import SingleEvent from '../SingleEvent/SingleEvent'
+import EventUpdate from '../EventUpdate/EventUpdate'
 import Profile from '../Profile/Profile'
 
 class App extends Component {
@@ -69,6 +70,17 @@ class App extends Component {
             const eventLogId = match.params.id
             return (
               <SingleEvent
+                id={eventLogId}
+                user={user}
+                history={history}
+              />
+            )
+          }} />
+          <AuthenticatedRoute user={user} exact path='/event-feed/:id' render={(eventLogProps) => {
+            const { match } = eventLogProps
+            const eventLogId = match.params.id
+            return (
+              <EventUpdate
                 id={eventLogId}
                 user={user}
                 history={history}

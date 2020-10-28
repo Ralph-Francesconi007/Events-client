@@ -10,6 +10,7 @@ class SingleEvent extends Component {
     super(props)
     this.state = {
       isLoaded: false,
+      isUpdated: false,
       title: '',
       time: '',
       date: '',
@@ -29,6 +30,7 @@ class SingleEvent extends Component {
         console.log(response)
         this.setState({
           isLoaded: true,
+          formShown: false,
           eventLog: response.data.event,
           title: response.data.event.title,
           time: response.data.event.time,
@@ -36,6 +38,36 @@ class SingleEvent extends Component {
           description: response.data.event.description,
           createdAt: response.data.event.createdAt,
           owner: response.data.event.owner
+        })
+      })
+      .catch(console.error)
+  }
+
+  updateClick = () => {
+    this.setState({ formShown: true })
+  }
+
+  handleUpdate = (event) => {
+    event.preventDefault()
+    axios({
+      url: `${apiUrl}/event/` + this.props.id,
+      method: 'PATCH',
+      headers: {
+        Authorization: 'Bearer ' + `${this.props.user.token}`
+      },
+      data: {
+        event: {
+          title: this.state.title,
+          time: this.state.time,
+          date: this.state.date,
+          description: this.state.description
+        }
+      }
+    })
+      .then(response => {
+        this.setState({
+          isUpdated: true,
+          formShown: false
         })
       })
       .catch(console.error)
@@ -66,6 +98,7 @@ class SingleEvent extends Component {
             </Card>
           </Col>
           <Button variant="primary" type="button" onClick={this.handleDelete}>Delete</Button>
+          <Button variant="primary" type="button" onClick={this.updateClick}>Update</Button>
         </div>
       )
     }

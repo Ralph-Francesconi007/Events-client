@@ -14,7 +14,7 @@ class EventLog extends Component {
     super(props)
     this.state = {
       isLoaded: false,
-      eventLog: []
+      event: []
     }
   }
   componentDidMount () {
@@ -37,7 +37,7 @@ class EventLog extends Component {
     let jsx
     if (this.state.isLoaded === false) {
       jsx = <p>Loading ...</p>
-    } else if (this.state.eventLog === 0) {
+    } else if (this.state.eventLog.length === 0) {
       jsx = <p>No Events, please add an event!</p>
     } else {
       jsx = (

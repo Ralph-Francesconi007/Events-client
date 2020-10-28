@@ -11,7 +11,8 @@ class CreateEvent extends Component {
       createEvent: {
         title: '',
         time: '',
-        date: ''
+        date: '',
+        description: ''
       },
       createdEvent: null
     }
@@ -43,7 +44,7 @@ class CreateEvent extends Component {
   }
 
   render () {
-    const { title, time, date } = this.state
+    const { title, time, date, description } = this.state
     return (
       <div>
         <h2>Create an Event</h2>
@@ -60,6 +61,10 @@ class CreateEvent extends Component {
           <Form.Group>
             <Form.Label>Date of the Event:</Form.Label>
             <Form.Control required id="date" type="text" name="date" value={date} placeholder="Date of Event" onChange={this.handleChange}/>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Description of the Event:</Form.Label>
+            <Form.Control required id="description" type="text" name="description" value={description} placeholder="Description of The Event" onChange={this.handleChange}/>
           </Form.Group>
           <Button type="submit">Create the Event</Button>
         </Form>

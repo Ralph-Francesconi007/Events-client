@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import apiUrl from './../../apiConfig'
+import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import { Link } from 'react-router-dom'
+
+const cardStyle = {
+  margin: '10px'
+}
 
 class EventLog extends Component {
   constructor (props) {
@@ -37,13 +44,18 @@ class EventLog extends Component {
         <div>
           {this.state.eventLog.map(eventLog => {
             return (
-              <div key={eventLog._id}>
-                <h3>{eventLog.title}</h3>
-                <p>{eventLog.time}</p>
-                <p>{eventLog.date}</p>
-              </div>
+              <Col key={eventLog._id}><Link to={`/event-feed/${eventLog._id}`}>
+                <Card key={eventLog._id} border="primary" style={cardStyle}>
+                  <Card.Title>Title of Event: {eventLog.title}</Card.Title>
+                  <Card.Title>Time: {eventLog.time}</Card.Title>
+                  <Card.Title>Date: {eventLog.date}</Card.Title>
+                  <Card.Text>{eventLog.description}</Card.Text>
+                </Card>
+              </Link>
+              </Col>
             )
           })}
+          <br />
         </div>
       )
     }

@@ -13,6 +13,7 @@ class SingleEvent extends Component {
     this.state = {
       isLoaded: false,
       isUpdated: false,
+      rsvp: false,
       title: '',
       time: '',
       date: '',
@@ -45,8 +46,10 @@ class SingleEvent extends Component {
       .catch(console.error)
   }
 
-  updateClick = () => {
-    this.setState({ formShown: true })
+  toggleRSVP = () => {
+    this.setState(prevState => {
+      return { rsvp: !prevState.rsvp }
+    })
   }
 
   handleDelete = () => {
@@ -82,7 +85,7 @@ class SingleEvent extends Component {
       jsx = (
         <div>
           <Col key={event._id}>
-            <Card border="primary">
+            <Card border="primary" className={this.state.rsvp ? 'RSVP' : 'UN-RSVP'}>
               <Card.Title>Title of Event: {this.state.title}</Card.Title>
               <Card.Title>Time: {this.state.time}</Card.Title>
               <Card.Title>Date: {this.state.date}</Card.Title>
@@ -91,6 +94,9 @@ class SingleEvent extends Component {
           </Col>
           <Button variant="primary" type="button" onClick={this.handleDelete}>Delete</Button>
           <Link to={`/event-feed/edit/${this.props.id}`}><Button variant="primary" type="button">Update</Button></Link>
+          <Button variant="primary" type="button" onClick={this.toggleRSVP}>
+            {this.state.rsvp ? 'UN-RSVP' : 'RSVP'}
+          </Button>
         </div>
       )
     }

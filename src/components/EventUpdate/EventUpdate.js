@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import apiUrl from './../../apiConfig'
 import Card from 'react-bootstrap/Card'
+import messages from '../AutoDismissAlert/messages'
+import { Redirect, withRouter } from 'react-router-dom'
 
 class EventUpdate extends Component {
   constructor (props) {
@@ -72,6 +74,7 @@ class EventUpdate extends Component {
   }
   handleSubmit = (event) => {
     event.preventDefault()
+    const { msgAlert, history } = this.props
     // make a POST request to API /books route with book data
     axios({
       url: `${apiUrl}/event/` + this.props.id,
@@ -87,10 +90,27 @@ class EventUpdate extends Component {
       }
     })
       .then(response => this.setState({ isUpdated: true }))
+      .then(() => history.push('/event-feed'))
+      .then(() => msgAlert({
+        heading: 'Succesfully Updated the Event',
+        message: messages.updateEventSuccess,
+        variant: 'success'
+      }))
+      .catch(error => {
+        this.setState({ title: '', time: '', date: '', description: '' })
+        msgAlert({
+          heading: 'Could not update the event, failed with error ' + error.messages,
+          message: messages.updateEventFailed,
+          variant: 'danger'
+        })
+      })
       .catch(console.error)
   }
 
   render () {
+    if (this.state.isUpdated) {
+      return <Redirect to={'/event-feed'} />
+    }
     let jsx
     // while the book is loading
     if (this.state.isLoaded === false) {
@@ -122,4 +142,4 @@ class EventUpdate extends Component {
   }
 }
 
-export default EventUpdate
+export default withRouter(EventUpdate)

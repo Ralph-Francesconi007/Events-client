@@ -60,7 +60,7 @@ class App extends Component {
             <ChangePassword msgAlert={this.msgAlert} user={user} />
           )} />
           <AuthenticatedRoute user={user} exact path='/create-event' render={() => (
-            <CreateEvent user={user} />
+            <CreateEvent msgAlert={this.msgAlert} user={user} />
           )} />
           <AuthenticatedRoute user={user} exact path='/event-feed' render={() => (
             <EventLog user={user} />
@@ -73,10 +73,11 @@ class App extends Component {
                 id={eventLogId}
                 user={user}
                 history={history}
+                msgAlert={this.msgAlert}
               />
             )
           }} />
-          <AuthenticatedRoute user={user} exact path='/event-feed/:id' render={(eventLogProps) => {
+          <AuthenticatedRoute user={user} exact path='/event-feed/edit/:id' render={(eventLogProps) => {
             const { match } = eventLogProps
             const eventLogId = match.params.id
             return (
@@ -84,6 +85,7 @@ class App extends Component {
                 id={eventLogId}
                 user={user}
                 history={history}
+                msgAlert={this.msgAlert}
               />
             )
           }} />

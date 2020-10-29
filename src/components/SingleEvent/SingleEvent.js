@@ -4,6 +4,8 @@ import axios from 'axios'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import messages from '../AutoDismissAlert/messages'
+import { Link } from 'react-router-dom'
 
 class SingleEvent extends Component {
   constructor (props) {
@@ -47,33 +49,8 @@ class SingleEvent extends Component {
     this.setState({ formShown: true })
   }
 
-  handleUpdate = (event) => {
-    event.preventDefault()
-    axios({
-      url: `${apiUrl}/event/` + this.props.id,
-      method: 'PATCH',
-      headers: {
-        Authorization: 'Bearer ' + `${this.props.user.token}`
-      },
-      data: {
-        event: {
-          title: this.state.title,
-          time: this.state.time,
-          date: this.state.date,
-          description: this.state.description
-        }
-      }
-    })
-      .then(response => {
-        this.setState({
-          isUpdated: true,
-          formShown: false
-        })
-      })
-      .catch(console.error)
-  }
-
   handleDelete = () => {
+    const { msgAlert, history } = this.props
     axios({
       url: `${apiUrl}/event/` + this.props.id,
       method: 'DELETE',
@@ -81,7 +58,22 @@ class SingleEvent extends Component {
         Authorization: 'Bearer ' + `${this.props.user.token}`
       }
     })
+      .then(() => history.push('/event-feed'))
+      .then(() => msgAlert({
+        heading: 'Succesfully Deleted the Event',
+        message: messages.deleteEventSuccess,
+        variant: 'success'
+      }))
+      .catch(error => {
+        this.setState({ title: '', time: '', date: '', description: '' })
+        msgAlert({
+          heading: 'Could not delete the event, failed with error ' + error.messages,
+          message: messages.deleteEventFailed,
+          variant: 'danger'
+        })
+      })
   }
+
   render () {
     let jsx
     if (this.state.isLoaded === false) {
@@ -98,7 +90,7 @@ class SingleEvent extends Component {
             </Card>
           </Col>
           <Button variant="primary" type="button" onClick={this.handleDelete}>Delete</Button>
-          <Button variant="primary" type="button" onClick={this.updateClick}>Update</Button>
+          <Link to={`/event-feed/edit/${this.props.id}`}><Button variant="primary" type="button">Update</Button></Link>
         </div>
       )
     }

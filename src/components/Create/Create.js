@@ -3,6 +3,8 @@ import axios from 'axios'
 import apiUrl from './../../apiConfig'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import messages from '../AutoDismissAlert/messages'
+import { withRouter } from 'react-router-dom'
 
 class CreateEvent extends Component {
   constructor (props) {
@@ -30,6 +32,7 @@ class CreateEvent extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
+    const { msgAlert, history } = this.props
     const eventItem = this.state.createEvent
     axios({
       url: `${apiUrl}/event`,
@@ -40,7 +43,20 @@ class CreateEvent extends Component {
       }
     })
       .then(response => this.setState({ createdEvent: response.data.event._id }))
-      .catch(console.error)
+      .then(() => history.push('/event-feed'))
+      .then(() => msgAlert({
+        heading: 'Event Created Successfully',
+        message: messages.createEventSuccess,
+        variant: 'success'
+      }))
+      .catch(error => {
+        this.setState({ title: '', time: '', date: '', description: '' })
+        msgAlert({
+          heading: 'Could Not Create The Event, Failed With Error: ' + error.messages,
+          message: messages.createEventFailure,
+          variant: 'danger'
+        })
+      })
   }
 
   render () {
@@ -73,4 +89,4 @@ class CreateEvent extends Component {
   }
 }
 
-export default CreateEvent
+export default withRouter(CreateEvent)

@@ -3,6 +3,7 @@ import axios from 'axios'
 import apiUrl from './../../apiConfig'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 
 const cardStyle = {
@@ -33,6 +34,12 @@ class EventLog extends Component {
       })
       .catch(console.error)
   }
+
+  toggleRSVP = () => {
+    this.setState(prevState => {
+      return { rsvp: !prevState.rsvp }
+    })
+  }
   render () {
     let jsx
     if (this.state.isLoaded === false) {
@@ -45,13 +52,16 @@ class EventLog extends Component {
           {this.state.eventLog.map(eventLog => {
             return (
               <Col key={eventLog._id}><Link to={`/event-feed/${eventLog._id}`}>
-                <Card key={eventLog._id} border="primary" style={cardStyle}>
+                <Card key={eventLog._id} border="primary" style={cardStyle} className={this.state.rsvp ? 'RSVP' : 'UN-RSVP'}>
                   <Card.Title>Title of Event: {eventLog.title}</Card.Title>
                   <Card.Title>Time: {eventLog.time}</Card.Title>
                   <Card.Title>Date: {eventLog.date}</Card.Title>
                   <Card.Text>{eventLog.description}</Card.Text>
                 </Card>
               </Link>
+              <Button variant="primary" type="button" onClick={this.toggleRSVP}>
+                {this.state.rsvp ? 'UN-RSVP' : 'RSVP'}
+              </Button>
               </Col>
             )
           })}

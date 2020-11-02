@@ -121,13 +121,12 @@ class EventUpdate extends Component {
         <Card>
           <Card.Body>
             <form onSubmit={this.handleSubmit}>
-              <Card.Title><input name="title" type="text" value={this.state.title} onChange={this.onTitleChangeHandler}/></Card.Title>
-              <Card.Title><input name="time" type="text" value={this.state.time} onChange={this.onTimeChangeHandler}/></Card.Title>
-              <Card.Title><input name="date" type="text" value={this.state.date} onChange={this.onDateChangeHandler}/></Card.Title>
-              <Card.Text>
-                <input name="description" type="text" value={this.state.description} onChange={this.onDescriptionChangeHandler}/>
-                <input type="submit" value="Submit" />
+              <Card.Title>Title of The Event: <input name="title" type="text" value={this.state.title} onChange={this.onTitleChangeHandler}/></Card.Title>
+              <Card.Title>Time of The Event: <input name="time" type="text" value={this.state.time} onChange={this.onTimeChangeHandler}/></Card.Title>
+              <Card.Title>Date of The Event: <input name="date" type="text" value={this.state.date} onChange={this.onDateChangeHandler}/></Card.Title>
+              <Card.Text>Description: <input name="description" type="text" value={this.state.description} onChange={this.onDescriptionChangeHandler}/>
               </Card.Text>
+              <input type="submit" value="Submit" />
             </form>
           </Card.Body>
         </Card>
